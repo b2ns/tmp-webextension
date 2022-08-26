@@ -1,0 +1,50 @@
+{
+  "name": "translate",
+  "displayName": "Translate",
+  "version": "0.0.1",
+  "private": true,
+  "description": "translate words",
+  "author": "b2ns",
+  "scripts": {
+    "dev": "npm run clear && cross-env NODE_ENV=development run-p dev:*",
+    "dev:prepare": "tsx scripts/prepare.ts",
+    "dev:web": "vite build --watch --mode development",
+    "dev:js": "npm run build:js -- --watch --mode development",
+    "dev:bg": "npm run build:bg -- --watch --mode development",
+    "build": "cross-env NODE_ENV=production run-s clear build:web build:prepare build:js build:bg",
+    "build:prepare": "tsx scripts/prepare.ts",
+    "build:web": "vite build",
+    "build:js": "vite build --config vite.config.content.ts",
+    "build:bg": "vite build --config vite.config.background.ts",
+    "pack": "cross-env NODE_ENV=production run-p pack:*",
+    "pack:zip": "rimraf extension.zip && jszip-cli add extension/* -o ./extension.zip",
+    "pack:crx": "crx pack extension -o ./extension.crx",
+    "pack:xpi": "cross-env WEB_EXT_ARTIFACTS_DIR=./ web-ext build --source-dir ./extension --filename extension.xpi --overwrite-dest",
+    "start:chromium": "web-ext run --source-dir ./extension --target=chromium",
+    "start:firefox": "web-ext run --source-dir ./extension --target=firefox-desktop",
+    "clear": "rimraf extension/dist extension/manifest.json extension.*"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@ffflorian/jszip-cli": "^3.1.6",
+    "@types/fs-extra": "^9.0.13",
+    "@types/node": "^18.7.11",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^2.0.1",
+    "chokidar": "^3.5.3",
+    "cross-env": "^7.0.3",
+    "crx": "^5.0.1",
+    "fs-extra": "^10.1.0",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "tsx": "^3.8.2",
+    "typescript": "^4.7.4",
+    "vite": "^3.0.9",
+    "web-ext": "^7.2.0",
+    "webext-bridge": "^5.0.5"
+  }
+}
