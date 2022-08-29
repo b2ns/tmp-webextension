@@ -105,7 +105,7 @@ export default () => {
     >
       <div
         className={`app__popup${show ? ' show' : ''}`}
-        style={{ transform: `translate(${x}px, calc(${y}px - 100%))` }}
+        style={{ transform: `translate(calc(${x}px + 10px), calc(${y}px - 100%))` }}
       >
         {translatedText ? (
           <div
