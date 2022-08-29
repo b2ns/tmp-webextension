@@ -1,3 +1,5 @@
+import chrome from './polyfill';
+
 export const debounce = (fn: (...args: any[]) => any, wait = 300) => {
   let timer: ReturnType<typeof setTimeout>;
   return function debounced(this: Object, ...args: any[]) {
@@ -19,21 +21,23 @@ export interface RequestOpts extends RequestInit {
 }
 export const request = (url: string, opts: RequestOpts) => {
   return new Promise((resolve, reject) => {
-    chrome.runtime.sendMessage(
-      {
+    chrome.runtime
+      .sendMessage({
         type: 'fetch',
         url,
         raw: opts.raw,
         opts,
-      },
-      (res: { data: any }) => {
+      })
+      .then((res: { data: any }) => {
         let { data } = res;
         if (data) {
           resolve(data);
         } else {
           reject();
         }
-      }
-    );
+      })
+      .catch((e: Error) => {
+        reject(e);
+      });
   });
 };

@@ -31,7 +31,11 @@ export async function getManifest() {
       '48': 'assets/icon-512.png',
       '128': 'assets/icon-512.png',
     },
-    options_page: 'dist/options/index.html',
+    // options_page: 'dist/options/index.html',
+    options_ui: {
+      page: 'dist/options/index.html',
+      open_in_tab: false,
+    },
     content_scripts: [
       {
         matches: ['http://*/*', 'https://*/*'],

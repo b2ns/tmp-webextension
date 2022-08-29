@@ -1,3 +1,4 @@
+import chrome from '~/utils/polyfill';
 import './Popup.css';
 
 export default () => {

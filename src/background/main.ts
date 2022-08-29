@@ -1,3 +1,5 @@
+import chrome from '~/utils/polyfill';
+
 chrome.runtime.onInstalled.addListener((): void => {
   console.log('Extension installed');
 });

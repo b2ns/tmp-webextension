@@ -32,7 +32,7 @@ export default () => {
     try {
       const data = await getTranslate(selectedText);
       setLoading(false);
-      setTranslatedText(data);
+      setTranslatedText(data || '');
     } catch (e: any) {
       setLoading(false);
       e && setTranslatedText(e.message);
