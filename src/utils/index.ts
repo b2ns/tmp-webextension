@@ -28,13 +28,8 @@ export const request = (url: string, opts: RequestOpts) => {
         raw: opts.raw,
         opts,
       })
-      .then((res: { data: any }) => {
-        let { data } = res;
-        if (data) {
-          resolve(data);
-        } else {
-          reject();
-        }
+      .then((res: any) => {
+        resolve(res.data);
       })
       .catch((e: Error) => {
         reject(e);

@@ -11,8 +11,8 @@ type Pos = {
 
 const POPUP_MAX_WIDTH = 300;
 const POPUP_MAX_HEIGHT = 200;
-const BTN_MAX_WIDTH = 70;
-const BTN_MAX_HEIGHT = 38;
+const BTN_MAX_WIDTH = 80;
+const BTN_MAX_HEIGHT = 40;
 
 export default () => {
   const [selectedText, setSelectedText] = useState('');

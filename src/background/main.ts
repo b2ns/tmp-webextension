@@ -8,14 +8,22 @@ chrome.runtime.onMessage.addListener(
   (request: any, sender: any, sendResponse: any) => {
     if (request.type === 'fetch') {
       // fetch here to bypass SOP
-      fetch(request.url, request.opts)
+      const { timeout = 8000 } = request.opts;
+      const controller = new AbortController();
+      let timer = setTimeout(() => {
+        controller.abort();
+      }, timeout);
+
+      fetch(request.url, { ...request.opts, signal: controller.signal })
         .then((res) => {
+          clearTimeout(timer);
           (request.raw ? res.text() : res.json()).then((data) => {
             sendResponse({ data });
           });
         })
         .catch((e) => {
-          sendResponse({ data: null });
+          clearTimeout(timer);
+          sendResponse({});
         });
     }
 
