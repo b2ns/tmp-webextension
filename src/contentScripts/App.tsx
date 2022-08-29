@@ -116,7 +116,7 @@ export default () => {
         ) : (
           <button
             className="app__btn"
-            onClick={fetchTranslate}
+            onMouseEnter={fetchTranslate}
             disabled={loading}
           >
             {loading ? '翻译中...' : '翻译'}
