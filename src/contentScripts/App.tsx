@@ -4,6 +4,16 @@ import { useEventListener } from '~/hooks/';
 import { nextTick } from '~/utils/';
 import './App.css';
 
+type Pos = {
+  x: number;
+  y: number;
+};
+
+const POPUP_MAX_WIDTH = 300;
+const POPUP_MAX_HEIGHT = 200;
+const BTN_MAX_WIDTH = 70;
+const BTN_MAX_HEIGHT = 38;
+
 export default () => {
   const [selectedText, setSelectedText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
@@ -11,7 +21,7 @@ export default () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const showPopup = () => {
+  const showPopup = (pos: Pos) => {
     let text = selectedText;
     if (!text) {
       const selection = document.getSelection();
@@ -24,6 +34,7 @@ export default () => {
     }
 
     setSelectedText(text);
+    setPos(pos);
     setShow(true);
   };
 
@@ -57,13 +68,7 @@ export default () => {
 
   const onMouseup = (e: Event) => {
     const { clientX, clientY } = e as MouseEvent;
-
-    setPos({
-      x: clientX,
-      y: clientY,
-    });
-
-    nextTick(showPopup);
+    nextTick(() => showPopup({ x: clientX, y: clientY }));
   };
 
   useEventListener(document, 'select', onSelect);
@@ -74,6 +79,24 @@ export default () => {
     e.stopPropagation();
   };
 
+  let x = pos.x,
+    y = pos.y;
+  let itemW, itemH;
+  if (translatedText) {
+    itemW = POPUP_MAX_WIDTH;
+    itemH = POPUP_MAX_HEIGHT;
+  } else {
+    itemW = BTN_MAX_WIDTH;
+    itemH = BTN_MAX_HEIGHT;
+  }
+
+  if (x + itemW >= window.innerWidth) {
+    x = window.innerWidth - itemW - 50;
+  }
+  if (y - itemH <= 0) {
+    y = itemH + 50;
+  }
+
   return (
     <div
       className="app"
@@ -82,7 +105,7 @@ export default () => {
     >
       <div
         className={`app__popup${show ? ' show' : ''}`}
-        style={{ transform: `translate(${pos.x}px, calc(${pos.y}px - 100%))` }}
+        style={{ transform: `translate(${x}px, calc(${y}px - 100%))` }}
       >
         {translatedText ? (
           <div
