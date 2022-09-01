@@ -31,6 +31,7 @@
   border: 0;
   border-radius: 2px;
   box-shadow: 1px 1px 10px 1px #d9d9d9;
+  color: #000;
   font-size: 12px;
 }
 .app__text ul {
