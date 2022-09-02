@@ -10,7 +10,6 @@
 }
 .app__trigger {
   box-sizing: border-box;
-  width: 40px;
   cursor: pointer;
 }
 @keyframes zoom {
@@ -34,8 +33,6 @@
 }
 .app__text {
   box-sizing: border-box;
-  width: 300px;
-  height: 200px;
   overflow: auto;
   padding: 8px 12px;
   border: 0;

@@ -6,8 +6,8 @@ import './App.css';
 
 const POPUP_MAX_WIDTH = 300;
 const POPUP_MAX_HEIGHT = 200;
-const BTN_MAX_WIDTH = 40;
-const BTN_MAX_HEIGHT = 44;
+const TRIGGER_MAX_WIDTH = 30;
+const TRIGGER_MAX_HEIGHT = 30;
 
 export default () => {
   const textRef = useRef('');
@@ -87,8 +87,8 @@ export default () => {
     itemW = POPUP_MAX_WIDTH;
     itemH = POPUP_MAX_HEIGHT;
   } else {
-    itemW = BTN_MAX_WIDTH;
-    itemH = BTN_MAX_HEIGHT;
+    itemW = TRIGGER_MAX_WIDTH;
+    itemH = TRIGGER_MAX_HEIGHT;
   }
 
   if (x + itemW >= window.innerWidth) {
@@ -108,6 +108,7 @@ export default () => {
       >
         {translatedText ? (
           <div
+            style={{ width: POPUP_MAX_WIDTH, height: POPUP_MAX_HEIGHT }}
             className="app__text"
             // use innerHTML here, may suffer xss attack
             dangerouslySetInnerHTML={{ __html: translatedText }}
@@ -116,6 +117,7 @@ export default () => {
           <img
             src={imgIcon}
             alt="icon"
+            style={{ width: TRIGGER_MAX_WIDTH, height: TRIGGER_MAX_HEIGHT }}
             className={`app__trigger${loading ? ' loading' : ''}`}
             onMouseEnter={fetchTranslate}
           />
