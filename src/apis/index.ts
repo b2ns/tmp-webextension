@@ -11,7 +11,7 @@ export const getTranslate = async (text: string) => {
     if (res && res[0]) {
       return res[0];
     }
-    throw new Error('未找到翻译');
+    throw new Error('未找到翻译!');
   }
   throw new Error('出错了:(');
 };
