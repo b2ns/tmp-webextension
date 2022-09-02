@@ -1,13 +1,7 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { getTranslate } from '~/apis/';
 import { useEventListener } from '~/hooks/';
-import { nextTick } from '~/utils/';
 import './App.css';
-
-type Pos = {
-  x: number;
-  y: number;
-};
 
 const POPUP_MAX_WIDTH = 300;
 const POPUP_MAX_HEIGHT = 200;
@@ -15,33 +9,17 @@ const BTN_MAX_WIDTH = 80;
 const BTN_MAX_HEIGHT = 40;
 
 export default () => {
-  const [selectedText, setSelectedText] = useState('');
+  const textRef = useRef('');
+  const inputTextRef = useRef('');
   const [translatedText, setTranslatedText] = useState('');
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const showPopup = (pos: Pos) => {
-    let text = selectedText;
-    if (!text) {
-      const selection = document.getSelection();
-      if (selection) {
-        text = selection.toString();
-      }
-    }
-    if (!text) {
-      return;
-    }
-
-    setSelectedText(text);
-    setPos(pos);
-    setShow(true);
-  };
-
   const fetchTranslate = async () => {
     setLoading(true);
     try {
-      const data = await getTranslate(selectedText);
+      const data = await getTranslate(textRef.current);
       setLoading(false);
       setTranslatedText(data || '');
     } catch (e: any) {
@@ -51,9 +29,10 @@ export default () => {
   };
 
   const reset = () => {
+    textRef.current = '';
+    inputTextRef.current = '';
     setShow(false);
     setLoading(false);
-    setSelectedText('');
     setTranslatedText('');
   };
 
@@ -63,17 +42,35 @@ export default () => {
     if (selectionStart === selectionEnd) {
       return;
     }
-    setSelectedText(target.value.slice(selectionStart!, selectionEnd!));
+    inputTextRef.current = target.value.slice(selectionStart!, selectionEnd!);
   };
 
   const onMouseup = (e: Event) => {
+    if (textRef.current) {
+      reset();
+      return;
+    }
+
     const { clientX, clientY } = e as MouseEvent;
-    nextTick(() => showPopup({ x: clientX, y: clientY }));
+    let text = '';
+    const selection = document.getSelection();
+    if (selection) {
+      text = selection.toString();
+    }
+    if (!text) {
+      text = inputTextRef.current;
+    }
+    if (!text) {
+      return;
+    }
+
+    textRef.current = text;
+    setPos({ x: clientX, y: clientY });
+    setShow(true);
   };
 
   useEventListener(document, 'select', onSelect);
   useEventListener(document, 'mouseup', onMouseup);
-  useEventListener(document, 'mousedown', reset);
 
   const stopPropagation = (e: any) => {
     e.stopPropagation();
@@ -98,14 +95,12 @@ export default () => {
   }
 
   return (
-    <div
-      className="app"
-      onMouseUp={stopPropagation}
-      onMouseDown={stopPropagation}
-    >
+    <div className="app" onMouseUp={stopPropagation}>
       <div
         className={`app__popup${show ? ' show' : ''}`}
-        style={{ transform: `translate(calc(${x}px + 10px), calc(${y}px - 100%))` }}
+        style={{
+          transform: `translate(calc(${x}px + 10px), calc(${y}px - 100%))`,
+        }}
       >
         {translatedText ? (
           <div
