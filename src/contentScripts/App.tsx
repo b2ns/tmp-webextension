@@ -38,11 +38,13 @@ export default () => {
   };
 
   const reset = () => {
-    textRef.current = '';
-    inputTextRef.current = '';
-    setShow(false);
-    setLoading(false);
-    setTranslatedText('');
+    if (textRef.current) {
+      textRef.current = '';
+      inputTextRef.current = '';
+      setShow(false);
+      setLoading(false);
+      setTranslatedText('');
+    }
   };
 
   const onSelect = (e: Event) => {
@@ -126,12 +128,12 @@ const adjustPos = (pos: Pos, itemW: number, itemH: number) => {
   const OFFSET_Y = 20;
   let { x, y } = pos;
   x += 10;
-  y -= 1.2 * itemH;
+  y -= 1.1 * itemH;
 
   if (x + itemW >= window.innerWidth) {
     x = window.innerWidth - itemW - OFFSET_X;
   }
-  if (y - itemH <= 0) {
+  if (y <= 0) {
     y = OFFSET_Y;
   }
   return { x, y };

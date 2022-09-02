@@ -2,12 +2,12 @@ import chrome from './polyfill';
 
 export const debounce = (fn: (...args: any[]) => any, wait = 300) => {
   let timer: ReturnType<typeof setTimeout>;
-  return function debounced(this: Object, ...args: any[]) {
+  return function debounced(...args: any[]) {
     if (timer) {
       clearTimeout(timer);
     }
     timer = setTimeout(() => {
-      fn.apply(this, args);
+      fn.apply(null, args);
     }, wait);
   };
 };
