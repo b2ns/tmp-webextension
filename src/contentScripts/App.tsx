@@ -1,19 +1,23 @@
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { getTranslate } from '~/apis/';
 import imgIcon from '~/assets/icon-512.png';
 import { useEventListener } from '~/hooks/';
 import { stopPropagation } from '~/utils/';
 import './App.css';
 
-const POPUP_MAX_WIDTH = 300;
-const POPUP_MAX_HEIGHT = 200;
 const TRIGGER_MAX_WIDTH = 30;
 const TRIGGER_MAX_HEIGHT = 30;
+
+interface Pos {
+  x: number;
+  y: number;
+}
 
 export default () => {
   const textRef = useRef('');
   const inputTextRef = useRef('');
   const [translatedText, setTranslatedText] = useState('');
+  const [triggerPos, setTriggerPos] = useState({ x: 0, y: 0 });
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -70,42 +74,35 @@ export default () => {
     }
 
     textRef.current = text;
-    setPos({ x: clientX, y: clientY });
+    const pos = { x: clientX, y: clientY };
+    setTriggerPos(pos);
+    setPos(adjustPos(pos, TRIGGER_MAX_WIDTH, TRIGGER_MAX_HEIGHT));
     setShow(true);
   };
 
   useEventListener(document, 'select', onSelect);
   useEventListener(document, 'mouseup', onMouseup);
 
-  let x = pos.x,
-    y = pos.y;
-  let itemW, itemH;
-  if (translatedText) {
-    itemW = POPUP_MAX_WIDTH;
-    itemH = POPUP_MAX_HEIGHT;
-  } else {
-    itemW = TRIGGER_MAX_WIDTH;
-    itemH = TRIGGER_MAX_HEIGHT;
-  }
-
-  if (x + itemW >= window.innerWidth) {
-    x = window.innerWidth - itemW - 50;
-  }
-  if (y - itemH <= 0) {
-    y = itemH + 50;
-  }
+  const getTextEl = useCallback(
+    (el: HTMLDivElement) => {
+      if (el) {
+        setPos(adjustPos(triggerPos, el.offsetWidth, el.offsetHeight));
+      }
+    },
+    [triggerPos]
+  );
 
   return (
     <div className="app" onMouseUp={stopPropagation}>
       <div
         className={`app__popup${show ? ' show' : ''}`}
         style={{
-          transform: `translate(calc(${x}px + 10px), calc(${y}px - 100%))`,
+          transform: `translate(${pos.x}px, ${pos.y}px)`,
         }}
       >
         {translatedText ? (
           <div
-            style={{ width: POPUP_MAX_WIDTH, height: POPUP_MAX_HEIGHT }}
+            ref={getTextEl}
             className="app__text"
             // use innerHTML here, may suffer xss attack
             dangerouslySetInnerHTML={{ __html: translatedText }}
@@ -122,4 +119,20 @@ export default () => {
       </div>
     </div>
   );
+};
+
+const adjustPos = (pos: Pos, itemW: number, itemH: number) => {
+  const OFFSET_X = 20;
+  const OFFSET_Y = 20;
+  let { x, y } = pos;
+  x += 10;
+  y -= 1.2 * itemH;
+
+  if (x + itemW >= window.innerWidth) {
+    x = window.innerWidth - itemW - OFFSET_X;
+  }
+  if (y - itemH <= 0) {
+    y = OFFSET_Y;
+  }
+  return { x, y };
 };

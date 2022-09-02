@@ -33,6 +33,8 @@
 }
 .app__text {
   box-sizing: border-box;
+  max-width: 400px;
+  max-height: 300px;
   overflow: auto;
   padding: 8px 12px;
   border: 0;
