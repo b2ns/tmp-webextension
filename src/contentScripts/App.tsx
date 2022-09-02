@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { getTranslate } from '~/apis/';
 import imgIcon from '~/assets/icon-512.png';
 import { useEventListener } from '~/hooks/';
+import { stopPropagation } from '~/utils/';
 import './App.css';
 
 const POPUP_MAX_WIDTH = 300;
@@ -75,10 +76,6 @@ export default () => {
 
   useEventListener(document, 'select', onSelect);
   useEventListener(document, 'mouseup', onMouseup);
-
-  const stopPropagation = (e: any) => {
-    e.stopPropagation();
-  };
 
   let x = pos.x,
     y = pos.y;

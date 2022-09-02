@@ -16,6 +16,10 @@ export const nextTick = (fn: (...args: any[]) => any) => {
   Promise.resolve().then(fn);
 };
 
+export const stopPropagation = (e: any) => {
+  e.stopPropagation();
+};
+
 export interface RequestOpts extends RequestInit {
   raw: boolean;
 }
