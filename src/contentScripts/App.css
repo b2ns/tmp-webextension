@@ -3,24 +3,34 @@
   display: none;
   top: 0;
   left: 0;
-  background-color: #fff;
   z-index: 9999;
 }
 .app__popup.show {
   display: block;
 }
-.app__btn {
+.app__trigger {
   box-sizing: border-box;
-  width: 80px;
-  padding: 8px 10px;
-  border: 0;
-  border-radius: 2px;
-  box-shadow: 1px 1px 10px 1px #d9d9d9;
-  outline: 0;
-  background-color: #fff;
-  color: #000;
-  font-weight: 400;
+  width: 40px;
   cursor: pointer;
+}
+@keyframes zoom {
+  from {
+    transform: scale(1, 1);
+  }
+  to {
+    transform: scale(1.2, 1.2);
+  }
+}
+.app__trigger.loading {
+  animation: zoom 0.5s ease-in infinite alternate;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 .app__text {
   box-sizing: border-box;
@@ -31,11 +41,18 @@
   border: 0;
   border-radius: 2px;
   box-shadow: 1px 1px 10px 1px #d9d9d9;
+  background-color: #fff;
   color: #000;
   font-size: 12px;
+}
+.app__popup.show .app__text {
+  animation: fade-in 0.3s;
 }
 .app__text ul {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+.app__text li {
+  margin-bottom: 6px;
 }

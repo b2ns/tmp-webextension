@@ -1,12 +1,13 @@
 import { useRef, useState } from 'react';
 import { getTranslate } from '~/apis/';
+import imgIcon from '~/assets/icon-512.png';
 import { useEventListener } from '~/hooks/';
 import './App.css';
 
 const POPUP_MAX_WIDTH = 300;
 const POPUP_MAX_HEIGHT = 200;
-const BTN_MAX_WIDTH = 80;
-const BTN_MAX_HEIGHT = 40;
+const BTN_MAX_WIDTH = 40;
+const BTN_MAX_HEIGHT = 44;
 
 export default () => {
   const textRef = useRef('');
@@ -17,6 +18,9 @@ export default () => {
   const [loading, setLoading] = useState(false);
 
   const fetchTranslate = async () => {
+    if (loading) {
+      return;
+    }
     setLoading(true);
     try {
       const data = await getTranslate(textRef.current);
@@ -109,13 +113,12 @@ export default () => {
             dangerouslySetInnerHTML={{ __html: translatedText }}
           ></div>
         ) : (
-          <button
-            className="app__btn"
+          <img
+            src={imgIcon}
+            alt="icon"
+            className={`app__trigger${loading ? ' loading' : ''}`}
             onMouseEnter={fetchTranslate}
-            disabled={loading}
-          >
-            {loading ? '翻译中...' : '翻译'}
-          </button>
+          />
         )}
       </div>
     </div>
