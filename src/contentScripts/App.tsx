@@ -55,10 +55,10 @@ export default () => {
     let text = '';
     const selection = document.getSelection();
     if (selection) {
-      text = selection.toString();
+      text = selection.toString().trim();
     }
     if (!text) {
-      text = inputTextRef.current;
+      text = inputTextRef.current.trim();
     }
     if (!text) {
       return;
