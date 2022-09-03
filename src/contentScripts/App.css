@@ -21,7 +21,7 @@
   }
 }
 .app__trigger.loading {
-  animation: zoom 0.5s ease-in infinite alternate;
+  animation: zoom 0.4s ease-in infinite alternate;
 }
 @keyframes fade-in {
   from {
@@ -41,7 +41,9 @@
   border-radius: 2px;
   box-shadow: 1px 1px 10px 1px #d9d9d9;
   background-color: #fff;
-  color: #000;
+  color: #343434;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   font-size: 12px;
 }
 .app__popup.show .app__text {
@@ -54,4 +56,8 @@
 }
 .app__text li {
   margin-bottom: 6px;
+  font-weight: bold;
+}
+.app__text .additional {
+  color: #959595;
 }

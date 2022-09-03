@@ -9,7 +9,16 @@ export const getTranslate = async (text: string) => {
     data = data.replace(/[\r\t\n]/g, '');
     const res = data.match(/<div[^>]*trans-container">(.*?)<\/div>/);
     if (res && res[0]) {
-      return res[0];
+      let html = res[0];
+      html = html.replaceAll('f.youdao', 'fanyi.youdao');
+      html = html.replace(/href="(.+?)"/g, (_, p1) => {
+        return `target="_blank" href="${
+          p1.startsWith('http')
+            ? ''
+            : 'https://dict.youdao.com' + (p1.startsWith('/') ? '' : '/')
+        }${p1}"`;
+      });
+      return html;
     }
     throw new Error('未找到翻译!');
   }
