@@ -1,9 +1,8 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { getTranslate } from '~/apis/';
 import imgIcon from '~/assets/icon-512.png';
-import { DICT_HREF } from '~/constants';
+import { DICT_HREF, EXT_ID } from '~/constants';
 import { useEventListener } from '~/hooks/';
-import { stopPropagation } from '~/utils/';
 import './App.css';
 
 const TRIGGER_MAX_WIDTH = 30;
@@ -15,6 +14,7 @@ interface Pos {
 }
 
 export default () => {
+  const containerEl = useRef<HTMLElement | null>(null);
   const textRef = useRef('');
   const inputTextRef = useRef('');
   const [translatedText, setTranslatedText] = useState('');
@@ -68,6 +68,9 @@ export default () => {
 
   const onMouseup = (e: Event) => {
     if (textRef.current) {
+      if (containerEl.current === e.target) {
+        return;
+      }
       reset();
       return;
     }
@@ -93,6 +96,9 @@ export default () => {
 
   useEventListener(document, 'select', onSelect, true);
   useEventListener(document, 'mouseup', onMouseup, true);
+  useEffect(() => {
+    containerEl.current = document.querySelector('#' + EXT_ID);
+  }, []);
 
   const getTextEl = useCallback(
     (el: HTMLDivElement) => {
@@ -104,7 +110,7 @@ export default () => {
   );
 
   return (
-    <div className="app" onMouseUp={stopPropagation}>
+    <div className="app">
       <div
         className={`app__popup${show ? ' show' : ''}`}
         style={{

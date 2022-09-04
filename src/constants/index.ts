@@ -1,3 +1,5 @@
+export const EXT_ID = '____web_ext____t_r_a_n_s_l_a_t_e____';
+
 export const YOUDAO_ORIGIN = 'https://dict.youdao.com';
 
 export const OLD_YOUDAO_HREF = `${YOUDAO_ORIGIN}/w`;
