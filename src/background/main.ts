@@ -1,7 +1,15 @@
 import chrome from '~/utils/polyfill';
 
 chrome.runtime.onInstalled.addListener((): void => {
-  console.log('Extension installed');
+  chrome.contextMenus.create({
+    id: 'translate',
+    title: '翻译',
+    contexts: ['selection'],
+    documentUrlPatterns: ['<all_urls>'],
+    visible: true,
+  });
+
+  console.log('Extension: Translate installed');
 });
 
 chrome.runtime.onMessage.addListener(
@@ -31,5 +39,14 @@ chrome.runtime.onMessage.addListener(
     return true;
   }
 );
+
+chrome.contextMenus.onClicked.addListener((info: any, tabs: any) => {
+  chrome.tabs.create({
+    index: tabs.index + 1,
+    url: `https://dict.youdao.com/result?lang=en&word=${encodeURIComponent(
+      info.selectionText.trim()
+    )}`,
+  });
+});
 
 export {};

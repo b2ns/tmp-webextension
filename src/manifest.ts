@@ -15,7 +15,7 @@ export async function getManifest() {
       service_worker: 'dist/background/index.js',
     },
     host_permissions: ['<all_urls>'],
-    permissions: ['storage', 'activeTab', 'scripting', 'tabs'],
+    permissions: ['storage', 'activeTab', 'scripting', 'tabs', 'contextMenus'],
     action: {
       default_popup: 'dist/popup/index.html',
       default_icon: {
