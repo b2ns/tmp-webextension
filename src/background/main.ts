@@ -1,3 +1,4 @@
+import { DICT_HREF } from '~/constants';
 import chrome from '~/utils/polyfill';
 
 chrome.runtime.onInstalled.addListener((): void => {
@@ -43,9 +44,7 @@ chrome.runtime.onMessage.addListener(
 chrome.contextMenus.onClicked.addListener((info: any, tabs: any) => {
   chrome.tabs.create({
     index: tabs.index + 1,
-    url: `https://dict.youdao.com/result?lang=en&word=${encodeURIComponent(
-      info.selectionText.trim()
-    )}`,
+    url: `${DICT_HREF}${encodeURIComponent(info.selectionText.trim())}`,
   });
 });
 

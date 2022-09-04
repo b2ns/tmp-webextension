@@ -1,7 +1,8 @@
+import { TRANSLATE_HREF, YOUDAO_ORIGIN } from '~/constants/';
 import { request } from '~/utils/';
 
 export const getTranslate = async (text: string) => {
-  const url = `https://dict.youdao.com/w/${encodeURIComponent(text)}`;
+  const url = `${TRANSLATE_HREF}/${encodeURIComponent(text)}`;
   let data = (await request(url, { raw: true })) as string;
   if (data) {
     // 没钱搞公用翻译api
@@ -15,7 +16,7 @@ export const getTranslate = async (text: string) => {
         return `target="_blank" href="${
           p1.startsWith('http')
             ? ''
-            : 'https://dict.youdao.com' + (p1.startsWith('/') ? '' : '/')
+            : YOUDAO_ORIGIN + (p1.startsWith('/') ? '' : '/')
         }${p1}"`;
       });
       return html;
