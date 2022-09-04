@@ -91,8 +91,8 @@ export default () => {
     setShow(true);
   };
 
-  useEventListener(document, 'select', onSelect);
-  useEventListener(document, 'mouseup', onMouseup);
+  useEventListener(document, 'select', onSelect, true);
+  useEventListener(document, 'mouseup', onMouseup, true);
 
   const getTextEl = useCallback(
     (el: HTMLDivElement) => {
