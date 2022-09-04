@@ -57,6 +57,13 @@ export default () => {
       return;
     }
     inputTextRef.current = target.value.slice(selectionStart!, selectionEnd!);
+    target.addEventListener(
+      'blur',
+      () => {
+        inputTextRef.current = '';
+      },
+      { once: true }
+    );
   };
 
   const onMouseup = (e: Event) => {
@@ -66,13 +73,12 @@ export default () => {
     }
 
     const { clientX, clientY } = e as MouseEvent;
-    let text = '';
-    const selection = document.getSelection();
-    if (selection) {
-      text = selection.toString().trim();
-    }
+    let text = inputTextRef.current.trim();
     if (!text) {
-      text = inputTextRef.current.trim();
+      const selection = document.getSelection();
+      if (selection) {
+        text = selection.toString().trim();
+      }
     }
     if (!text) {
       return;
