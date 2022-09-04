@@ -61,3 +61,11 @@
 .app__text .additional {
   color: #959595;
 }
+.app__external {
+  margin-top: 6px;
+  text-align: right;
+}
+.app__external a,
+.app__external a:visited {
+  color: #aaa;
+}

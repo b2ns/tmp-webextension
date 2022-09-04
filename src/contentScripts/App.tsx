@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { getTranslate } from '~/apis/';
 import imgIcon from '~/assets/icon-512.png';
+import { DICT_HREF } from '~/constants';
 import { useEventListener } from '~/hooks/';
 import { stopPropagation } from '~/utils/';
 import './App.css';
@@ -17,6 +18,7 @@ export default () => {
   const textRef = useRef('');
   const inputTextRef = useRef('');
   const [translatedText, setTranslatedText] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const [triggerPos, setTriggerPos] = useState({ x: 0, y: 0 });
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [show, setShow] = useState(false);
@@ -33,7 +35,7 @@ export default () => {
       setTranslatedText(data || '');
     } catch (e: any) {
       setLoading(false);
-      e && setTranslatedText(e.message);
+      e && setErrorMsg(e.message);
     }
   };
 
@@ -44,6 +46,7 @@ export default () => {
       setShow(false);
       setLoading(false);
       setTranslatedText('');
+      setErrorMsg('');
     }
   };
 
@@ -102,13 +105,23 @@ export default () => {
           transform: `translate(${pos.x}px, ${pos.y}px)`,
         }}
       >
-        {translatedText ? (
-          <div
-            ref={getTextEl}
-            className="app__text"
-            // use innerHTML here, may suffer xss attack
-            dangerouslySetInnerHTML={{ __html: translatedText }}
-          ></div>
+        {translatedText || errorMsg ? (
+          <div ref={getTextEl} className="app__text">
+            <div
+              // use innerHTML here, may suffer xss attack
+              dangerouslySetInnerHTML={{ __html: translatedText || errorMsg }}
+            ></div>
+            {translatedText && (
+              <div className="app__external">
+                <a
+                  href={`${DICT_HREF}${encodeURIComponent(textRef.current)}`}
+                  target="_blank"
+                >
+                  详细
+                </a>
+              </div>
+            )}
+          </div>
         ) : (
           <img
             src={imgIcon}
