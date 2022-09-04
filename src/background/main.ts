@@ -4,7 +4,7 @@ import chrome from '~/utils/polyfill';
 chrome.runtime.onInstalled.addListener((): void => {
   chrome.contextMenus.create({
     id: 'translate',
-    title: '翻译',
+    title: '翻译 "%s"',
     contexts: ['selection'],
     documentUrlPatterns: ['<all_urls>'],
     visible: true,
