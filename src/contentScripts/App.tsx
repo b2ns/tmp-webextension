@@ -129,7 +129,7 @@ export default () => {
                   href={`${DICT_HREF}${encodeURIComponent(textRef.current)}`}
                   target="_blank"
                 >
-                  详细
+                  更多 »
                 </a>
               </div>
             )}
